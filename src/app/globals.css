@@ -1,26 +1,104 @@
+@import '@mantine/core/styles.css';
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+    /* Core Colors */
+    --color-background: hsl(210 20% 98%);
+    --color-foreground: hsl(220 25% 10%);
+
+    --color-card: hsl(0 0% 100%);
+    --color-card-foreground: hsl(220 25% 10%);
+
+    --color-popover: hsl(0 0% 100%);
+    --color-popover-foreground: hsl(220 25% 10%);
+
+    --color-primary: hsl(165 80% 38%);
+    --color-primary-foreground: hsl(0 0% 100%);
+
+    --color-secondary: hsl(210 20% 96%);
+    --color-secondary-foreground: hsl(220 25% 10%);
+
+    --color-muted: hsl(210 15% 95%);
+    --color-muted-foreground: hsl(220 10% 46%);
+
+    --color-accent: hsl(165 60% 94%);
+    --color-accent-foreground: hsl(165 80% 25%);
+
+    --color-destructive: hsl(0 72% 51%);
+    --color-destructive-foreground: hsl(0 0% 100%);
+
+    --color-border: hsl(210 15% 91%);
+    --color-input: hsl(210 15% 91%);
+    --color-ring: hsl(165 80% 38%);
+
+    /* Custom Radii mapping */
+    --radius-xl: 0.75rem;
+
+    /* Custom Gradients - using Tailwind 4 native vars */
+    --background-image-gradient-primary: linear-gradient(135deg, hsl(165 80% 38%), hsl(180 70% 45%));
+    --background-image-gradient-hero: linear-gradient(135deg, hsl(165 80% 38%) 0%, hsl(200 80% 50%) 100%);
+    --background-image-gradient-subtle: linear-gradient(135deg, hsl(165 60% 96%) 0%, hsl(210 40% 97%) 100%);
+    --background-image-gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+
+    /* Shadows */
+    --shadow-card: 0 4px 12px hsl(220 25% 10% / 0.06);
+    --shadow-glow: 0 0 20px hsl(165 80% 38% / 0.15);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer base {
+
+    *,
+    ::after,
+    ::before {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-family: var(--font-inter), sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-bold tracking-tight;
+        font-family: var(--font-space-grotesk), sans-serif;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@layer utilities {
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    /* Backwards compatibility for class names used in components */
+    .gradient-primary {
+        background: var(--background-image-gradient-primary);
+    }
+
+    .gradient-hero {
+        background: var(--background-image-gradient-hero);
+    }
+
+    .gradient-subtle {
+        background: var(--background-image-gradient-subtle);
+    }
+
+    .gradient-card {
+        background: var(--background-image-gradient-card);
+    }
+
+    .shadow-card {
+        box-shadow: var(--shadow-card);
+    }
+
+    .shadow-glow {
+        box-shadow: var(--shadow-glow);
+    }
+
+    .glass {
+        backdrop-filter: blur(12px);
+        background: hsl(0 0% 100% / 0.7);
+        border: 1px solid hsl(210 15% 91% / 0.5);
+    }
 }
