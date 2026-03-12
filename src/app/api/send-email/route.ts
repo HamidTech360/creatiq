@@ -7,9 +7,9 @@ export async function POST(req: Request) {
     try {
         const { to, subject, html } = await req.json();
 
-        if (!process.env.RESEND_API_KEY) {
-            return NextResponse.json({ error: 'Resend API key is missing' }, { status: 500 });
-        }
+        // if (!process.env.RESEND_API_KEY) {
+        //     return NextResponse.json({ error: 'Resend API key is missing' }, { status: 500 });
+        // }
 
         if (!html) {
             return NextResponse.json({ error: 'Email body (html) is required' }, { status: 400 });
