@@ -1,30 +1,36 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY || '123');
 
 export async function POST(req: Request) {
     try {
         const { to, subject, html } = await req.json();
+        const plunkApiKey = process.env.PLUNK_API_KEY;
 
-        // if (!process.env.RESEND_API_KEY) {
-        //     return NextResponse.json({ error: 'Resend API key is missing' }, { status: 500 });
-        // }
-
-        if (!html) {
-            return NextResponse.json({ error: 'Email body (html) is required' }, { status: 400 });
+        if (!plunkApiKey) {
+            return NextResponse.json({ error: 'Plunk API key is missing. Please add PLUNK_API_KEY to your .env file.' }, { status: 500 });
         }
 
-        const { data: resData, error } = await resend.emails.send({
-            from: 'CreateIQ <notifications@createiq.ai>',
-            to: [to],
-            subject: subject || 'CreateIQ Notification',
-            html: html,
+        if (!html || !to) {
+            return NextResponse.json({ error: 'Recipient and Email body (html) are required' }, { status: 400 });
+        }
+
+        const response = await fetch('https://api.useplunk.com/v1/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${plunkApiKey}`,
+            },
+            body: JSON.stringify({
+                to: to,
+                subject: subject || 'CreateIQ Notification',
+                body: html, // Plunk uses 'body' for the content
+            }),
         });
 
-        if (error) {
-            console.error("Resend Error:", error);
-            return NextResponse.json({ error: error.message }, { status: 400 });
+        const resData = await response.json();
+
+        if (!response.ok) {
+            console.error("Plunk Error:", resData);
+            return NextResponse.json({ error: resData.message || 'Failed to send email via Plunk' }, { status: response.status });
         }
 
         return NextResponse.json({ success: true, data: resData });

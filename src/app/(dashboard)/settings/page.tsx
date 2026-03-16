@@ -242,8 +242,8 @@ export default function SettingsPage() {
                         transition={{ duration: 0.2 }}
                     >
                         <Tabs.Panel value="profile">
-                            <div className="glass p-8 sm:p-12 rounded-[3rem] border border-border shadow-md max-w-2xl">
-                                <div className="flex items-center justify-between mb-10">
+                            <div className="glass p-4 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] border border-border shadow-md max-w-2xl">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
                                     <h3 className="font-display text-2xl font-black text-foreground tracking-tight">Public Identity</h3>
                                     {saved === 'profile' && (
                                         <motion.span
@@ -297,7 +297,7 @@ export default function SettingsPage() {
                         </Tabs.Panel>
 
                         <Tabs.Panel value="preferences">
-                            <div className="glass p-8 sm:p-12 rounded-[3rem] border border-border shadow-md max-w-2xl">
+                            <div className="glass p-4 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] border border-border shadow-md max-w-2xl">
                                 <div className="flex items-center justify-between mb-10">
                                     <h3 className="font-display text-2xl font-black text-foreground tracking-tight">AI Agent Settings</h3>
                                 </div>
@@ -314,7 +314,7 @@ export default function SettingsPage() {
                                             description: { marginBottom: 12, fontSize: 12 }
                                         }}
                                     />
-                                    <div className="p-8 gradient-subtle rounded-[2.5rem] border border-primary/10">
+                                    <div className="p-6 sm:p-8 gradient-subtle rounded-[2rem] sm:rounded-[2.5rem] border border-primary/10">
                                         <p className="text-primary font-black mb-2 flex items-center gap-2">
                                             <Sparkles size={16} /> Advanced Adaptation Engine
                                         </p>
@@ -335,8 +335,8 @@ export default function SettingsPage() {
                         </Tabs.Panel>
 
                         <Tabs.Panel value="notifications">
-                            <div className="glass p-8 sm:p-12 rounded-[3rem] border border-border shadow-md max-w-2xl">
-                                <div className="flex items-center justify-between mb-10">
+                            <div className="glass p-4 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] border border-border shadow-md max-w-2xl">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
                                     <h3 className="font-display text-2xl font-black text-foreground tracking-tight">Pulse Notifications</h3>
                                     {saved === 'notify' && (
                                         <motion.span
@@ -364,9 +364,9 @@ export default function SettingsPage() {
                         </Tabs.Panel>
 
                         <Tabs.Panel value="account">
-                            <div className="glass p-8 sm:p-12 rounded-[3rem] border border-border shadow-md max-w-2xl space-y-12">
+                            <div className="glass p-4 sm:p-12 rounded-[2.5rem] sm:rounded-[3rem] border border-border shadow-md max-w-2xl space-y-12">
                                 <div>
-                                    <div className="flex items-center justify-between mb-8">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                                         <h3 className="font-display text-2xl font-black text-foreground tracking-tight">Access Key</h3>
                                         {saved === 'password' && (
                                             <motion.span
@@ -378,7 +378,7 @@ export default function SettingsPage() {
                                             </motion.span>
                                         )}
                                     </div>
-                                    <form onSubmit={handleUpdatePassword} className="space-y-6 max-w-sm">
+                                    <form onSubmit={handleUpdatePassword} className="space-y-6 w-full max-w-sm">
                                         <PasswordInput
                                             label="New Password"
                                             size="md"
@@ -405,13 +405,13 @@ export default function SettingsPage() {
 
                                 <div className="pt-8 border-t border-border">
                                     <h3 className="font-display text-2xl font-black text-destructive tracking-tight mb-4">Core Termination</h3>
-                                    <div className="p-8 bg-destructive/5 rounded-[2.5rem] border border-destructive/10">
-                                        <p className="text-destructive font-black mb-2 uppercase text-xs tracking-widest">Danger Zone</p>
-                                        <p className="text-sm text-muted-foreground font-medium leading-relaxed mb-6">
+                                    <div className="p-4 sm:p-8 bg-destructive/5 rounded-[2rem] sm:rounded-[2.5rem] border border-destructive/10">
+                                        <p className="text-destructive font-black mb-2 uppercase text-[10px] tracking-widest">Danger Zone</p>
+                                        <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-relaxed mb-6">
                                             Deleting your account will purge your entire library, drafts, and AI configuration from the CreateIQ hub. This action cannot be undone. To proceed, please verify your current password.
                                         </p>
 
-                                        <form onSubmit={handleDeleteAccount} className="space-y-4 max-w-sm">
+                                        <form onSubmit={handleDeleteAccount} className="space-y-4 w-full max-w-sm">
                                             <PasswordInput
                                                 placeholder="Enter your password to confirm"
                                                 size="md"
@@ -428,9 +428,9 @@ export default function SettingsPage() {
                                                 variant="filled"
                                                 size="lg"
                                                 radius="xl"
-                                                className="w-full font-black h-12 flex items-center gap-2 opacity-50 cursor-not-allowed"
+                                                className="w-full font-black h-12 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed text-xs sm:text-sm"
                                             >
-                                                <Trash2 size={16} /> Delete Account Permanently (Disabled)
+                                                <Trash2 size={16} /> Delete Account Permanently
                                             </Button>
                                         </form>
                                     </div>

@@ -108,17 +108,17 @@ export default function SavedTopicsPage() {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
                                 transition={{ delay: i * 0.05 }}
-                                className="group relative flex flex-col md:flex-row md:items-center gap-6 rounded-3xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md"
+                                className="group relative flex flex-col md:flex-row md:items-center gap-4 sm:gap-6 rounded-3xl border border-border bg-card p-4 sm:p-6 shadow-sm transition-all hover:shadow-md overflow-hidden"
                             >
                                 <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-3 mb-2">
+                                    <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mb-2">
                                         <span className="text-[10px] font-black text-primary uppercase tracking-widest">{item.daily_topics?.niche}</span>
-                                        <span className="h-1 w-1 bg-border rounded-full" />
+                                        <span className="hidden sm:block h-1 w-1 bg-border rounded-full" />
                                         <span className="text-[11px] font-bold text-muted-foreground">
                                             Saved {new Date(item.saved_at).toLocaleDateString()}
                                         </span>
                                     </div>
-                                    <h3 className="font-display text-lg font-bold text-foreground truncate group-hover:text-primary transition-colors">
+                                    <h3 className="font-display text-base sm:text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight break-words">
                                         {item.daily_topics?.headline}
                                     </h3>
                                     <div className="mt-3 flex items-center gap-4">
@@ -131,9 +131,9 @@ export default function SavedTopicsPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 shrink-0">
-                                    <Link href={`/generate/${item.topic_id}`} className="no-underline">
-                                        <button className="gradient-primary text-white font-black px-6 py-3 rounded-xl shadow-glow text-sm flex items-center gap-2 transition-all hover:px-8">
+                                <div className="flex items-center gap-2 sm:gap-3 shrink-0 pt-2 md:pt-0">
+                                    <Link href={`/generate/${item.topic_id}`} className="no-underline flex-1 sm:flex-none">
+                                        <button className="gradient-primary text-white font-black px-4 sm:px-6 py-3 rounded-xl shadow-glow text-xs sm:text-sm flex items-center justify-center gap-2 transition-all hover:px-8 w-full">
                                             <Sparkles className="h-4 w-4" />
                                             Generate
                                         </button>

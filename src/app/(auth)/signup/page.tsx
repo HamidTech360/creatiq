@@ -17,6 +17,7 @@ export default function SignupPage() {
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     const form = useForm({
         initialValues: {
@@ -38,29 +39,35 @@ export default function SignupPage() {
                 email: values.email,
                 password: values.password,
                 options: {
+                    emailRedirectTo: `${window.location.origin}/dashboard?verified=true`,
                     data: {
                         full_name: values.full_name,
+                        whatsapp_number: values.whatsapp_number,
+                        niche: values.niche,
+                        selected_platforms: values.selected_platforms,
                     }
                 }
             });
 
             if (authError) throw authError;
 
-            if (authData.user) {
-                const { error: profileError } = await supabase
-                    .from('profiles')
-                    .upsert({
-                        id: authData.user.id,
-                        email: values.email,
-                        full_name: values.full_name,
-                        whatsapp_number: values.whatsapp_number,
-                        niche: values.niche,
-                        selected_platforms: values.selected_platforms,
-                        onboarded: false,
-                    });
+           
+            if (authData.user && authData.user.identities && authData.user.identities.length === 0) {
+                setError("This email identity is already registered. Please log in or use a different email.");
+                setLoading(false);
+                return;
+            }
 
-                if (profileError) throw profileError;
-                router.push('/onboarding');
+            if (authData.user) {
+                // Profile creation is now handled by the database trigger `handle_new_user` 
+                // in `supabase/migrations/initial_schema.sql` which extracts metadata.
+
+                // If session is null, it means email confirmation is required
+                if (!authData.session) {
+                    setSuccess(true);
+                } else {
+                    router.push('/onboarding');
+                }
             }
         } catch (err: any) {
             setError(getErrorMessage(err));
@@ -81,7 +88,34 @@ export default function SignupPage() {
                 <p className="mt-2 text-muted-foreground font-medium">Join the elite circle of creators using data-backed AI.</p>
             </div>
 
-            <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-5">
+            {success ? (
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="glass border-primary/20 p-8 rounded-[2rem] text-center space-y-6"
+                >
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto text-primary">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-black text-foreground mb-2">Check Your Email</h2>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                            We've sent a verification link to <span className="text-primary font-bold">{form.values.email}</span>. Click the link to activate your access key.
+                        </p>
+                    </div>
+                    <Button
+                        variant="subtle"
+                        color="teal"
+                        onClick={() => router.push('/login')}
+                        className="font-black uppercase tracking-widest text-[10px]"
+                    >
+                        Back to Hub
+                    </Button>
+                </motion.div>
+            ) : (
+                <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-5">
                 {error && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -132,8 +166,10 @@ export default function SignupPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Select
                             label="Primary Niche"
-                            placeholder="Select one"
+                            placeholder="Search or select"
                             data={NICHES}
+                            searchable
+                            nothingFoundMessage="No matching role found"
                             size="md"
                             radius="lg"
                             {...form.getInputProps('niche')}
@@ -168,6 +204,7 @@ export default function SignupPage() {
                     </Link>
                 </p>
             </form>
+            )}
         </div>
     );
 }

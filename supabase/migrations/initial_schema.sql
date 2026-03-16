@@ -157,12 +157,26 @@ CREATE TRIGGER set_notification_settings_updated_at
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO public.profiles (id, email, full_name)
-    VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name')
+    INSERT INTO public.profiles (
+        id, 
+        email, 
+        full_name, 
+        whatsapp_number, 
+        niche, 
+        selected_platforms
+    )
+    VALUES (
+        NEW.id, 
+        NEW.email, 
+        NEW.raw_user_meta_data->>'full_name',
+        NEW.raw_user_meta_data->>'whatsapp_number',
+        COALESCE(NEW.raw_user_meta_data->>'niche', 'Other'),
+        (SELECT ARRAY_AGG(x) FROM jsonb_array_elements_text(NEW.raw_user_meta_data->'selected_platforms') x)
+    )
     ON CONFLICT (id) DO NOTHING;
     
-    INSERT INTO public.notification_settings (user_id)
-    VALUES (NEW.id)
+    INSERT INTO public.notification_settings (user_id, whatsapp_number)
+    VALUES (NEW.id, NEW.raw_user_meta_data->>'whatsapp_number')
     ON CONFLICT (user_id) DO NOTHING;
     
     RETURN NEW;

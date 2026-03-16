@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Sparkles, TrendingUp, MessageSquare, Palette, ArrowRight, Zap, Target, Send, ChevronRight } from 'lucide-react';
+import { Sparkles, TrendingUp, MessageSquare, Palette, ArrowRight, Zap, Target, Send, ChevronRight, LogIn, UserPlus } from 'lucide-react';
+import { Menu } from '@mantine/core';
 
 const features = [
   { icon: TrendingUp, title: 'Daily AI Topics', desc: 'Get fresh trending topic ideas for your niche every morning, powered by AI.' },
@@ -35,18 +36,38 @@ export default function LandingPage() {
             <span className="font-display text-xl font-bold text-foreground">CreateIQ</span>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors no-underline">
-              Log In
-            </Link>
-            <Link href="/signup" className="gradient-primary text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-glow transition-all hover:scale-105 active:scale-95 no-underline">
-              Get Started Free
-            </Link>
+            <Menu shadow="xl" width={200} radius="md" position="bottom-end" offset={10} transitionProps={{ transition: 'pop' }}>
+              <Menu.Target>
+                <button className="inline-flex items-center justify-center gradient-primary text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-glow transition-all hover:scale-105 active:scale-95 border-none cursor-pointer">
+                  Get Started Free
+                </button>
+              </Menu.Target>
+              <Menu.Dropdown className="border-border shadow-2xl p-2 bg-white/80 backdrop-blur-xl">
+                <div className="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Choose Portal</div>
+                <Menu.Item
+                  component={Link}
+                  href="/login"
+                  leftSection={<LogIn size={16} />}
+                  className="rounded-lg font-bold text-gray-700 hover:bg-primary/10 hover:text-primary h-11"
+                >
+                  Log in
+                </Menu.Item>
+                <Menu.Item
+                  component={Link}
+                  href="/signup"
+                  leftSection={<UserPlus size={16} />}
+                  className="rounded-lg font-bold text-gray-700 hover:bg-primary/10 hover:text-primary h-11"
+                >
+                  Sign up free
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-32 pb-20 md:pt-20 md:pb-32">
+      <section className="relative overflow-hidden pt-24 pb-20 md:pt-20 md:pb-32">
         <div className="absolute inset-0 gradient-subtle opacity-60" />
         <div className="absolute top-20 right-10 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute bottom-10 left-10 h-56 w-56 rounded-full bg-info/5 blur-3xl" />

@@ -4,14 +4,19 @@ import { TextInput, PasswordInput, Button } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { loginValidator } from '@/validators';
 import { createClient } from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, Suspense } from 'react';
 import { getProfile } from '@/services/profile';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { KeyRound, ShieldCheck } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const isResetSuccess = searchParams.get('reset') === 'success';
+    const isSignupVerified = searchParams.get('verified') === 'true';
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -62,13 +67,16 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={form.onSubmit(handleSubmit)} className="space-y-6">
-                {error && (
+                {(error || isResetSuccess || isSignupVerified) && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-destructive/10 text-destructive text-sm p-4 rounded-2xl border border-destructive/20 font-bold"
+                        className={cn(
+                            "text-sm p-4 rounded-2xl border font-bold",
+                            error ? "bg-destructive/10 text-destructive border-destructive/20" : "bg-primary/10 text-primary border-primary/20 shadow-glow shadow-primary/5"
+                        )}
                     >
-                        {error}
+                        {error || (isResetSuccess ? "Access Key Updated Successfully. Please log in." : "Email Verified. Welcome to the elite hub.")}
                     </motion.div>
                 )}
 
@@ -122,5 +130,13 @@ export default function LoginPage() {
                 </p>
             </form>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<div className="text-center p-20 animate-pulse text-muted-foreground font-black uppercase tracking-widest text-xs">Syncing Authorization...</div>}>
+            <LoginForm />
+        </Suspense>
     );
 }
