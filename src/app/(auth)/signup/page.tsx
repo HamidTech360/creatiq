@@ -1,6 +1,6 @@
 'use client';
 
-import { TextInput, PasswordInput, Button, Select, MultiSelect } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Autocomplete, MultiSelect } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { signupValidator } from '@/validators';
 import { createClient } from '@/utils/supabase/client';
@@ -164,12 +164,10 @@ export default function SignupPage() {
                     />
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <Select
+                        <Autocomplete
                             label="Primary Niche"
-                            placeholder="Search or select"
+                            placeholder="Search or type your own"
                             data={NICHES}
-                            searchable
-                            nothingFoundMessage="No matching role found"
                             size="md"
                             radius="lg"
                             {...form.getInputProps('niche')}

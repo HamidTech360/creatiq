@@ -16,7 +16,7 @@ import {
     Clock,
     Zap
 } from 'lucide-react';
-import { Skeleton } from '@mantine/core';
+import { Skeleton, TextInput as MantineTextInput } from '@mantine/core';
 
 import { getTopicById, Topic } from '@/services/topics';
 import { saveDraft, getDraftById } from '@/services/drafts';
@@ -42,7 +42,7 @@ export default function GeneratePostPage() {
     const [activeVariation, setActiveVariation] = useState('A');
     const [copied, setCopied] = useState(false);
     const [saved, setSaved] = useState(false);
-    const [wordCount, setWordCount] = useState<'Short' | 'Medium' | 'Long'>('Medium');
+    const [wordCount, setWordCount] = useState<string>('250');
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -218,23 +218,23 @@ export default function GeneratePostPage() {
                             </div>
 
                             <div>
-                                <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground mb-3 block">Word Count</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {(['Short', 'Medium', 'Long'] as const).map(w => (
-                                        <button
-                                            key={w}
-                                            onClick={() => setWordCount(w)}
-                                            className={cn(
-                                                "rounded-xl border-2 px-2 py-2 text-[11px] font-black transition-all",
-                                                wordCount === w
-                                                    ? "border-primary bg-primary/5 text-primary"
-                                                    : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
-                                            )}
-                                        >
-                                            {w}
-                                        </button>
-                                    ))}
-                                </div>
+                                <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground mb-3 block">Target Word Count</label>
+                                <MantineTextInput
+                                    type="number"
+                                    placeholder="e.g. 250"
+                                    value={wordCount}
+                                    onChange={(e) => setWordCount(e.currentTarget.value)}
+                                    size="md"
+                                    radius="xl"
+                                    styles={{
+                                        input: {
+                                            backgroundColor: 'var(--secondary)',
+                                            border: '2px solid transparent',
+                                            fontWeight: 800,
+                                            textAlign: 'center'
+                                        }
+                                    }}
+                                />
                             </div>
 
                             <div>

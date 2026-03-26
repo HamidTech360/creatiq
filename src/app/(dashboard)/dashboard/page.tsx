@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bookmark, Sparkles, BookmarkCheck, LayoutGrid, Search, Flame, RefreshCcw, Wand2, X } from 'lucide-react';
-import { Skeleton, Select } from '@mantine/core';
+import { Skeleton, Select, Autocomplete } from '@mantine/core';
 
 import { getTodaysTopics, Topic } from '@/services/topics';
 import { saveTopic, unsaveTopic } from '@/services/savedTopics';
@@ -92,10 +92,10 @@ export default function DashboardPage() {
     };
 
     useEffect(() => {
-        if (profile && selectedNiche) {
+        if (profile) {
             fetchTopics();
         }
-    }, [profile, selectedNiche]);
+    }, [profile]);
 
     const toggleSave = async (topicId: string) => {
         const supabase = createClient();
@@ -193,10 +193,10 @@ export default function DashboardPage() {
 
                 <div className="flex flex-col gap-4 w-full md:w-auto">
                     <div className="grid grid-cols-2 gap-3">
-                        <Select
+                        <Autocomplete
                             placeholder="Niche"
                             data={NICHES}
-                            value={selectedNiche}
+                            value={selectedNiche || ''}
                             onChange={setSelectedNiche}
                             size="sm"
                             radius="xl"

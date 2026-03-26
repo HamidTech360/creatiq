@@ -21,11 +21,13 @@ export async function POST(req: Request) {
 
         const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
-        const lengthGuideline = {
-            'Short': 'under 50 words (concise and punchy)',
-            'Medium': 'between 100-200 words (balanced detail)',
-            'Long': 'over 300 words (deep dive / storytelling)'
-        }[wordCount as 'Short' | 'Medium' | 'Long'] || 'balanced length';
+        const lengthGuideline = !isNaN(Number(wordCount)) 
+            ? `Approximately ${wordCount} words`
+            : {
+                'Short': 'under 50 words (concise and punchy)',
+                'Medium': 'between 100-200 words (balanced detail)',
+                'Long': 'over 300 words (deep dive / storytelling)'
+            }[wordCount as 'Short' | 'Medium' | 'Long'] || 'balanced length';
 
         const prompt = `
             You are an expert social media content creator. Generate 3 unique, high-engagement post variations for ${platform} based on the following trending topic:

@@ -23,9 +23,9 @@ export const getTodaysTopics = async (niche?: string, page: number = 1, pageSize
         .range(from, to)
         .order('created_at', { ascending: false });
 
-    if (niche) {
-        query = query.eq('niche', niche);
-    }
+    // if (niche) {
+    //     query = query.eq('niche', niche);
+    // }
 
     const { data, error, count } = await query;
 

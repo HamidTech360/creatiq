@@ -24,7 +24,7 @@ export async function POST(req: Request) {
         const prompt = `
             Act as a world-class social media trend analyst for the ${niche} niche. 
             Your brand voice is: ${voice || 'Professional & Authoritative'}.
-            Identify 5 high-impact, specific trending topics OR timeless content pillars that are currently performing well for creators in this niche.
+            Identify 5 high-impact, specific trending topics OR timeless content pillars for the current year that are currently performing well for creators in this niche.
             
             For each topic, provide:
             1. A catchy "Headline" (max 60 chars).
